@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Widget</class>
+ <widget class="QWidget" name="Widget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>796</width>
+    <height>531</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Widget</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>781</width>
+     <height>59</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>设置</string>
+   </property>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>30</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>最大匹输出场景数</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="input_match_quantity">
+    <property name="geometry">
+     <rect>
+      <x>599</x>
+      <y>26</y>
+      <width>171</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_image_dir_path">
+    <property name="geometry">
+     <rect>
+      <x>194</x>
+      <y>26</y>
+      <width>251</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>请先选择图片目录</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_open_image_dir">
+    <property name="geometry">
+     <rect>
+      <x>11</x>
+      <y>26</y>
+      <width>178</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>打开图片目录</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>90</y>
+     <width>781</width>
+     <height>361</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>分类配置</string>
+   </property>
+   <widget class="QComboBox" name="selector_match_type">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>30</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <item>
+     <property name="text">
+      <string>忽略选区</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>匹配选区</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>61</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>匹配类型</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="button_add_rect">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>90</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>添加点位</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget_rect">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>130</y>
+      <width>751</width>
+      <height>221</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="input_nfeatures">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>30</y>
+      <width>61</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>2000</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>30</y>
+      <width>54</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ORB 最大特征点数量&lt;/p&gt;&lt;p&gt;如果你传入 &lt;span style=&quot; font-family:'Courier New';&quot;&gt;nfeatures=500&lt;/span&gt;，ORB 算法就会在图片里进行筛选，&lt;span style=&quot; font-weight:700;&quot;&gt;只保留最明显的、质量最高的 500 个特征点&lt;/span&gt;。&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;为什么要限制数量？&lt;/span&gt; 如果特征点太多（比如几万个），后面的比对速度会变得极慢；如果太少，又可能比对不准。限制在这个数量，是在“准确度”和“运行速度”之间找一个完美的平衡。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>nfeatures</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>30</y>
+      <width>131</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;表示两个指纹的&lt;span style=&quot; font-weight:700;&quot;&gt;差距（距离）&lt;/span&gt;。数值越小，说明这两个点长得越像&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>match_distance_thresh</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="input_match_distance_thresh">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>30</y>
+      <width>51</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>45</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>90</y>
+      <width>544</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLineEdit" name="input_point_x">
+       <property name="inputMask">
+        <string/>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="maxLength">
+        <number>32767</number>
+       </property>
+       <property name="placeholderText">
+        <string>x轴</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="input_point_y">
+       <property name="placeholderText">
+        <string>y轴</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="input_rect_length">
+       <property name="placeholderText">
+        <string>长度</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="input_rect_width">
+       <property name="inputMask">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>宽度</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QPushButton" name="button_del_rect">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>90</y>
+      <width>83</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>删除点位</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>30</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;真正匹配成功的“好连线”有多少条。&lt;/p&gt;&lt;p&gt;如果好连线的数量超过了我们设定的及格线（&lt;span style=&quot; font-family:'Courier New';&quot;&gt;similarity_thresh&lt;/span&gt;），说明两张图相似度很高&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot; font-family:'Courier New','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt;相似匹配阈值&lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot; font-family:'Courier New','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt;注意：如果是&lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt; 'only_scan' &lt;/span&gt;&lt;span style=&quot; font-family:'Courier New','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt;局部，提取点较少，阈值建议设低点（如&lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt; 30~50&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt;）；&lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt;# &lt;/span&gt;&lt;span style=&quot; font-family:'Courier New','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt;如果是&lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt; 'ignore' &lt;/span&gt;&lt;span style=&quot; font-family:'Courier New','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt;仅抠除一小块，大部分全图都被扫描，阈值可以设高点（如&lt;/span&gt;&lt;span style=&quot; font-family:'JetBrains Mono','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt; 400~1000&lt;/span&gt;&lt;span style=&quot; font-family:'Courier New','monospace'; font-size:9.8pt; color:#7a7e85;&quot;&gt;）。&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string>similarity_thresh</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="input_similarity_thresh">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>30</y>
+      <width>51</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string/>
+    </property>
+    <property name="text">
+     <string>45</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="button_start">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>194</x>
+     <y>470</y>
+     <width>421</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>开始</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

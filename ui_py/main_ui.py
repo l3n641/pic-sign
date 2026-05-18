@@ -23,7 +23,7 @@ class Ui_Widget(object):
     def setupUi(self, Widget):
         if not Widget.objectName():
             Widget.setObjectName(u"Widget")
-        Widget.resize(796, 531)
+        Widget.resize(796, 555)
         self.groupBox = QGroupBox(Widget)
         self.groupBox.setObjectName(u"groupBox")
         self.groupBox.setGeometry(QRect(10, 10, 781, 59))
@@ -108,6 +108,10 @@ class Ui_Widget(object):
         self.button_start.setObjectName(u"button_start")
         self.button_start.setEnabled(False)
         self.button_start.setGeometry(QRect(194, 470, 421, 24))
+        self.button_remove_image = QPushButton(Widget)
+        self.button_remove_image.setObjectName(u"button_remove_image")
+        self.button_remove_image.setEnabled(False)
+        self.button_remove_image.setGeometry(QRect(200, 500, 411, 24))
 
         self.retranslateUi(Widget)
 
@@ -154,7 +158,8 @@ class Ui_Widget(object):
 #if QT_CONFIG(tooltip)
         self.input_similarity_thresh.setToolTip("")
 #endif // QT_CONFIG(tooltip)
-        self.input_similarity_thresh.setText(QCoreApplication.translate("Widget", u"45", None))
+        self.input_similarity_thresh.setText(QCoreApplication.translate("Widget", u"1200", None))
         self.button_start.setText(QCoreApplication.translate("Widget", u"\u5f00\u59cb", None))
+        self.button_remove_image.setText(QCoreApplication.translate("Widget", u"\u79fb\u9664\u76f8\u540c\u540d\u79f0\u7684\u56fe\u7247", None))
     # retranslateUi
 

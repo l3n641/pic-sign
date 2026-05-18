@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>796</width>
-    <height>531</height>
+    <height>555</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -298,7 +298,7 @@
      <string/>
     </property>
     <property name="text">
-     <string>45</string>
+     <string>1200</string>
     </property>
    </widget>
   </widget>
@@ -316,6 +316,22 @@
    </property>
    <property name="text">
     <string>开始</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_remove_image">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>500</y>
+     <width>411</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>移除相同名称的图片</string>
    </property>
   </widget>
  </widget>

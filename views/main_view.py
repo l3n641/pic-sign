@@ -8,6 +8,7 @@ from PySide6.QtWidgets import QListWidgetItem
 from PySide6.QtWidgets import QMainWindow, QFileDialog
 from PySide6.QtWidgets import QMessageBox
 
+from service.image_manage import ImageManage
 from service.scene_clusterer import SceneClassifier
 from service.struct import Point, Rectangle
 # 导入转换后的 UI 类（注意路径，因为 ui_py 是在根目录下的包）
@@ -30,6 +31,7 @@ class MainView(QMainWindow, Ui_Widget):
 
         # --- 2. 绑定信号与槽（业务逻辑的核心） ---
         self.ui.button_open_image_dir.clicked.connect(self.handle_open_image_dir)
+        self.ui.button_remove_image.clicked.connect(self.handle_remove_image)
         self.ui.button_add_rect.clicked.connect(self.handle_add_rect)
         self.ui.button_del_rect.clicked.connect(self.handle_del_rect)
         self.ui.button_start.clicked.connect(self.handle_start_task)
@@ -49,10 +51,29 @@ class MainView(QMainWindow, Ui_Widget):
         if selected_dir:
             self.last_image_dir_path = selected_dir
             self.ui.button_start.setEnabled(True)
+            self.ui.button_remove_image.setEnabled(True)
             self.ui.label_image_dir_path.setText(f"已选择路径:{selected_dir}")
         else:
             self.ui.button_start.setEnabled(False)
+            self.ui.button_remove_image.setEnabled(False)
             self.ui.label_image_dir_path.setText("操作已取消")
+
+    def handle_remove_image(self):
+        # 弹出选择文件夹对话框
+        selected_dir = QFileDialog.getExistingDirectory(
+            self,
+            "请选择一个文件夹",
+            self.last_image_dir_path,  # 初始目录
+            QFileDialog.Option.ShowDirsOnly
+        )
+
+        if selected_dir:
+            image_srv = ImageManage(self.image_dir_path)
+            del_count, error_files = image_srv.delete_duplicates(selected_dir)
+            msg = f"成功移除{del_count}文件,移除失败{len(error_files)}个"
+            QMessageBox.information(self, "提示", msg)
+            if error_files:
+                print(error_files)
 
     def handle_add_rect(self):
         x = self.ui.input_point_x.text() or 0

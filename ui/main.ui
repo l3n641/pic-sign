@@ -215,7 +215,7 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLineEdit" name="input_point_x">
+      <widget class="QLineEdit" name="input_start_point_x">
        <property name="inputMask">
         <string/>
        </property>
@@ -226,31 +226,31 @@
         <number>32767</number>
        </property>
        <property name="placeholderText">
-        <string>x轴</string>
+        <string>起点x轴</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="input_point_y">
+      <widget class="QLineEdit" name="input_start_point_y">
        <property name="placeholderText">
-        <string>y轴</string>
+        <string>起点y轴</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="input_rect_length">
+      <widget class="QLineEdit" name="input_end_point_x">
        <property name="placeholderText">
-        <string>长度</string>
+        <string>终点x轴</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="input_rect_width">
+      <widget class="QLineEdit" name="input_end_point_y">
        <property name="inputMask">
         <string/>
        </property>
        <property name="placeholderText">
-        <string>宽度</string>
+        <string>终点y轴</string>
        </property>
       </widget>
      </item>

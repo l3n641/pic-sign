@@ -77,16 +77,18 @@ class MainView(QMainWindow, Ui_Widget):
                 print(error_files)
 
     def handle_add_rect(self):
-        x = self.ui.input_point_x.text() or 0
-        y = self.ui.input_point_y.text() or 0
-        rect_length = self.ui.input_rect_length.text() or 1
-        rect_width = self.ui.input_rect_width.text() or 1
-        x = int(x)
-        y = int(y)
-        rect_length = int(rect_length)
-        rect_width = int(rect_width)
+        start_point_x = self.ui.input_start_point_x.text() or 0
+        start_point_y = self.ui.input_start_point_y.text() or 0
+        end_point_x = self.ui.input_end_point_x.text() or 1
+        end_point_y = self.ui.input_end_point_y.text() or 1
+
+        start_point_x = int(start_point_x)
+        start_point_y = int(start_point_y)
+        end_point_x = int(end_point_x)
+        end_point_y = int(end_point_y)
+
         # 定义目标矩形区域
-        region = Rectangle(Point(x, y), width=rect_width, length=rect_length)
+        region = Rectangle(Point(start_point_x, start_point_y), Point(end_point_x, end_point_y))
 
         # 2. 创建列表项，界面上只显示一个名字
         item = QListWidgetItem(str(region))

@@ -68,8 +68,9 @@ class MainView(QMainWindow, Ui_Widget):
         )
 
         if selected_dir:
+            match_prefix = self.ui.checkBox_remove_image_match_prefix.isChecked()
             image_srv = ImageManage(self.image_dir_path)
-            del_count, error_files = image_srv.delete_duplicates(selected_dir)
+            del_count, error_files = image_srv.delete_duplicates(selected_dir, match_prefix)
             msg = f"成功移除{del_count}文件,移除失败{len(error_files)}个"
             QMessageBox.information(self, "提示", msg)
             if error_files:

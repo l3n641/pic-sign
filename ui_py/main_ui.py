@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QGroupBox, QHBoxLayout,
-    QLabel, QLineEdit, QListWidget, QListWidgetItem,
-    QPushButton, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGroupBox,
+    QHBoxLayout, QLabel, QLineEdit, QListWidget,
+    QListWidgetItem, QPushButton, QSizePolicy, QWidget)
 
 class Ui_Widget(object):
     def setupUi(self, Widget):
@@ -112,6 +112,9 @@ class Ui_Widget(object):
         self.button_remove_image.setObjectName(u"button_remove_image")
         self.button_remove_image.setEnabled(False)
         self.button_remove_image.setGeometry(QRect(200, 500, 411, 24))
+        self.checkBox_remove_image_match_prefix = QCheckBox(Widget)
+        self.checkBox_remove_image_match_prefix.setObjectName(u"checkBox_remove_image_match_prefix")
+        self.checkBox_remove_image_match_prefix.setGeometry(QRect(640, 500, 89, 24))
 
         self.retranslateUi(Widget)
 
@@ -161,5 +164,6 @@ class Ui_Widget(object):
         self.input_similarity_thresh.setText(QCoreApplication.translate("Widget", u"1200", None))
         self.button_start.setText(QCoreApplication.translate("Widget", u"\u5f00\u59cb", None))
         self.button_remove_image.setText(QCoreApplication.translate("Widget", u"\u79fb\u9664\u76f8\u540c\u540d\u79f0\u7684\u56fe\u7247", None))
+        self.checkBox_remove_image_match_prefix.setText(QCoreApplication.translate("Widget", u"\u6a21\u7cca\u5339\u914d", None))
     # retranslateUi
 

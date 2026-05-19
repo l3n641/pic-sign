@@ -334,6 +334,19 @@
     <string>移除相同名称的图片</string>
    </property>
   </widget>
+  <widget class="QCheckBox" name="checkBox_remove_image_match_prefix">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>500</y>
+     <width>89</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>模糊匹配</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

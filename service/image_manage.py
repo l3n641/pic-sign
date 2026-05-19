@@ -28,20 +28,32 @@ class ImageManage(object):
         if os.path.samefile(self.origin_image_dir, dir_b):
             return False, []
 
-        # 3. 获取目录 b 中的所有文件
-        files_in_b = {f for f in os.listdir(dir_b) if os.path.isfile(os.path.join(dir_b, f))}
+        # 3. 准备 history 目录
+        history_dir = os.path.join(self.origin_image_dir, 'history')
+        if not os.path.exists(history_dir):
+            os.makedirs(history_dir)
 
-        # 如果开启了前缀匹配，将目录 b 的文件名全部转换为“下划线前缀”集合
+        # 4. 递归获取目录 b 中的所有文件（包含 b 的所有下一级子目录）
+        files_in_b = set()
+        for root, _, files in os.walk(dir_b):
+            for f in files:
+                files_in_b.add(f)
+
+        # 如果开启了前缀匹配，将目录 b 的所有文件名全部转换为“下划线前缀”集合
         if match_prefix:
             b_targets = {self.get_file_prefix(f) for f in files_in_b}
         else:
             b_targets = files_in_b
 
-        deleted_count = 0
+        deleted_count = 0  # 这里代表实际移动成功的文件数
         error_files = []
 
-        # 4. 遍历目录 a
+        # 5. 只遍历目录 a 的当前层级
         for filename in os.listdir(self.origin_image_dir):
+            # 排除掉 history 目录本身，防止把自己刚移过去的文件又扫一遍
+            if filename == 'history':
+                continue
+
             file_path_a = os.path.join(self.origin_image_dir, filename)
 
             if os.path.isfile(file_path_a):
@@ -52,10 +64,17 @@ class ImageManage(object):
                 else:
                     is_match = filename in b_targets
 
-                # 如果匹配成功，执行删除
+                # 如果匹配成功，执行移动（模拟删除）
                 if is_match:
                     try:
-                        os.remove(file_path_a)
+                        # 构造目标文件的完整路径
+                        target_path = os.path.join(history_dir, filename)
+
+                        # 细节考虑：如果 history 目录里已经有了同名文件，先删掉旧的，防止 shutil.move 报错
+                        if os.path.exists(target_path):
+                            os.remove(target_path)
+
+                        shutil.move(file_path_a, history_dir)
                         deleted_count += 1
                     except Exception as e:
                         error_files.append(filename)

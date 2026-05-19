@@ -1,4 +1,6 @@
 import os
+import shutil
+import time
 
 
 class ImageManage(object):
@@ -59,3 +61,32 @@ class ImageManage(object):
                         error_files.append(filename)
 
         return deleted_count, error_files
+
+    def copy_images(self, sorted_scenes, n_top: int):
+        # 路径配置
+        out_dir_name = f'output_{time.time()}'
+        output_dir = os.path.join(self.origin_image_dir, out_dir_name)
+
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        if n_top <= 0:
+            top_scenes = sorted_scenes
+        else:
+            top_scenes = sorted_scenes[:n_top]
+
+        for rank, (s_id, f_list) in enumerate(sorted_scenes, 1):
+            status = "[保留并复制]" if (n_top <= 0 or rank <= n_top) else "[舍弃]"
+            print(f"  排名 {rank}: 场景 {s_id} -> 包含 {len(f_list)} 张图片 {status}")
+
+        print("\n--- 第三阶段：执行文件分区复制 ---")
+        for rank, (s_id, f_list) in enumerate(top_scenes, 1):
+            target_dir = os.path.join(output_dir, f"rank_{rank}_scene_{s_id}")
+            os.makedirs(target_dir, exist_ok=True)
+
+            print(f"正在复制 场景 {s_id} 的图片到: {target_dir}")
+            for filename in f_list:
+                src_path = os.path.join(self.origin_image_dir, filename)
+                shutil.copy(src_path, os.path.join(target_dir, filename))
+
+        return output_dir

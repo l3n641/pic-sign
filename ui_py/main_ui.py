@@ -15,9 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGroupBox,
-    QHBoxLayout, QLabel, QLineEdit, QListWidget,
-    QListWidgetItem, QPushButton, QSizePolicy, QWidget)
+from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
+    QGroupBox, QHBoxLayout, QLabel, QLineEdit,
+    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
+    QWidget)
 
 class Ui_Widget(object):
     def setupUi(self, Widget):
@@ -26,19 +27,19 @@ class Ui_Widget(object):
         Widget.resize(796, 555)
         self.groupBox = QGroupBox(Widget)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setGeometry(QRect(10, 10, 781, 59))
-        self.label_2 = QLabel(self.groupBox)
-        self.label_2.setObjectName(u"label_2")
-        self.label_2.setGeometry(QRect(470, 30, 111, 16))
-        self.input_match_quantity = QLineEdit(self.groupBox)
-        self.input_match_quantity.setObjectName(u"input_match_quantity")
-        self.input_match_quantity.setGeometry(QRect(599, 26, 171, 22))
-        self.label_image_dir_path = QLabel(self.groupBox)
-        self.label_image_dir_path.setObjectName(u"label_image_dir_path")
-        self.label_image_dir_path.setGeometry(QRect(194, 26, 251, 16))
+        self.groupBox.setGeometry(QRect(10, 10, 781, 62))
+        self.gridLayout = QGridLayout(self.groupBox)
+        self.gridLayout.setObjectName(u"gridLayout")
         self.button_open_image_dir = QPushButton(self.groupBox)
         self.button_open_image_dir.setObjectName(u"button_open_image_dir")
-        self.button_open_image_dir.setGeometry(QRect(11, 26, 178, 22))
+
+        self.gridLayout.addWidget(self.button_open_image_dir, 0, 0, 1, 1)
+
+        self.label_image_dir_path = QLabel(self.groupBox)
+        self.label_image_dir_path.setObjectName(u"label_image_dir_path")
+
+        self.gridLayout.addWidget(self.label_image_dir_path, 0, 1, 1, 1)
+
         self.groupBox_2 = QGroupBox(Widget)
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.groupBox_2.setGeometry(QRect(10, 90, 781, 361))
@@ -107,14 +108,24 @@ class Ui_Widget(object):
         self.button_start = QPushButton(Widget)
         self.button_start.setObjectName(u"button_start")
         self.button_start.setEnabled(False)
-        self.button_start.setGeometry(QRect(194, 470, 421, 24))
+        self.button_start.setGeometry(QRect(270, 460, 221, 24))
         self.button_remove_image = QPushButton(Widget)
         self.button_remove_image.setObjectName(u"button_remove_image")
         self.button_remove_image.setEnabled(False)
-        self.button_remove_image.setGeometry(QRect(200, 500, 411, 24))
+        self.button_remove_image.setGeometry(QRect(20, 500, 161, 24))
         self.checkBox_remove_image_match_prefix = QCheckBox(Widget)
         self.checkBox_remove_image_match_prefix.setObjectName(u"checkBox_remove_image_match_prefix")
-        self.checkBox_remove_image_match_prefix.setGeometry(QRect(640, 500, 89, 24))
+        self.checkBox_remove_image_match_prefix.setGeometry(QRect(200, 500, 89, 24))
+        self.button_export_images = QPushButton(Widget)
+        self.button_export_images.setObjectName(u"button_export_images")
+        self.button_export_images.setEnabled(False)
+        self.button_export_images.setGeometry(QRect(300, 500, 131, 25))
+        self.input_match_quantity = QLineEdit(Widget)
+        self.input_match_quantity.setObjectName(u"input_match_quantity")
+        self.input_match_quantity.setGeometry(QRect(560, 500, 51, 22))
+        self.label_2 = QLabel(Widget)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setGeometry(QRect(450, 500, 111, 21))
 
         self.retranslateUi(Widget)
 
@@ -124,10 +135,8 @@ class Ui_Widget(object):
     def retranslateUi(self, Widget):
         Widget.setWindowTitle(QCoreApplication.translate("Widget", u"Widget", None))
         self.groupBox.setTitle(QCoreApplication.translate("Widget", u"\u8bbe\u7f6e", None))
-        self.label_2.setText(QCoreApplication.translate("Widget", u"\u6700\u5927\u5339\u8f93\u51fa\u573a\u666f\u6570", None))
-        self.input_match_quantity.setText(QCoreApplication.translate("Widget", u"1", None))
-        self.label_image_dir_path.setText(QCoreApplication.translate("Widget", u"\u8bf7\u5148\u9009\u62e9\u56fe\u7247\u76ee\u5f55", None))
         self.button_open_image_dir.setText(QCoreApplication.translate("Widget", u"\u6253\u5f00\u56fe\u7247\u76ee\u5f55", None))
+        self.label_image_dir_path.setText(QCoreApplication.translate("Widget", u"\u8bf7\u5148\u9009\u62e9\u56fe\u7247\u76ee\u5f55", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("Widget", u"\u5206\u7c7b\u914d\u7f6e", None))
         self.selector_match_type.setItemText(0, QCoreApplication.translate("Widget", u"\u5ffd\u7565\u9009\u533a", None))
         self.selector_match_type.setItemText(1, QCoreApplication.translate("Widget", u"\u5339\u914d\u9009\u533a", None))
@@ -165,5 +174,8 @@ class Ui_Widget(object):
         self.button_start.setText(QCoreApplication.translate("Widget", u"\u5f00\u59cb", None))
         self.button_remove_image.setText(QCoreApplication.translate("Widget", u"\u79fb\u9664\u76f8\u540c\u540d\u79f0\u7684\u56fe\u7247", None))
         self.checkBox_remove_image_match_prefix.setText(QCoreApplication.translate("Widget", u"\u6a21\u7cca\u5339\u914d", None))
+        self.button_export_images.setText(QCoreApplication.translate("Widget", u"\u5bfc\u51fa\u56fe\u7247", None))
+        self.input_match_quantity.setText(QCoreApplication.translate("Widget", u"3", None))
+        self.label_2.setText(QCoreApplication.translate("Widget", u"\u6700\u5927\u5339\u8f93\u51fa\u573a\u666f\u6570", None))
     # retranslateUi
 

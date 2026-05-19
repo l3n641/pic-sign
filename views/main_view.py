@@ -1,16 +1,16 @@
 # views/main_view.py
-
 import os
-import time
 
+from PySide6.QtCore import QUrl
 from PySide6.QtCore import Qt
+from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QListWidgetItem
 from PySide6.QtWidgets import QMainWindow, QFileDialog
 from PySide6.QtWidgets import QMessageBox
 
 from service.image_manage import ImageManage
+from service.project_struct import Point, Rectangle
 from service.scene_clusterer import SceneClassifier
-from service.struct import Point, Rectangle
 # 导入转换后的 UI 类（注意路径，因为 ui_py 是在根目录下的包）
 from ui_py.main_ui import Ui_Widget
 
@@ -21,6 +21,7 @@ class MainView(QMainWindow, Ui_Widget):
 
         self.image_dir_path = ""
         self.last_image_dir_path = "./"
+        self.sorted_scenes = []
 
         # 1. 实例化 UI 对象并挂载到 self.ui
         self.ui = Ui_Widget()
@@ -35,6 +36,7 @@ class MainView(QMainWindow, Ui_Widget):
         self.ui.button_add_rect.clicked.connect(self.handle_add_rect)
         self.ui.button_del_rect.clicked.connect(self.handle_del_rect)
         self.ui.button_start.clicked.connect(self.handle_start_task)
+        self.ui.button_export_images.clicked.connect(self.handle_export_images)
 
     # --- 打开图片目录 ---
     def handle_open_image_dir(self):
@@ -120,11 +122,8 @@ class MainView(QMainWindow, Ui_Widget):
         QMessageBox.information(self, "成功", "该行数据已成功删除！")
 
     def handle_start_task(self):
+        self.ui.button_export_images.setEnabled(False)
         self.statusBar().showMessage("任务执行中")
-
-        # 路径配置
-        out_dir_name = f'output_{time.time()}'
-        out_folder = os.path.join(self.image_dir_path, out_dir_name)
 
         # 定义目标矩形区域
         my_regions = []
@@ -145,8 +144,6 @@ class MainView(QMainWindow, Ui_Widget):
         # 💥 控制开关：'only_scan'（只扫描矩形内） 或 'ignore'（抠除矩形，扫描矩形外）
         current_mode = types[default_type_index]
 
-        # 保留数量前 N 的场景数 (0 代表保留所有)
-        match_quantity = int(self.ui.input_match_quantity.text())
         nfeatures = int(self.ui.input_nfeatures.text())
 
         # 相似匹配阈值
@@ -165,11 +162,36 @@ class MainView(QMainWindow, Ui_Widget):
             similarity_thresh=similarity_thresh
         )
 
-        classifier.classify(
+        self.sorted_scenes = classifier.classify(
             source_dir=self.image_dir_path,
-            output_dir=out_folder,
-            n_top=match_quantity
         )
         self.statusBar().showMessage("任务执行完成")
+        self.ui.button_export_images.setEnabled(True)
 
-        print("\n所有图片处理完毕。")
+    def handle_export_images(self):
+        if not self.sorted_scenes:
+            QMessageBox.information(self, "错误", "还没处理图片！")
+            return
+
+        # 保留数量前 N 的场景数 (0 代表保留所有)
+        match_quantity = int(self.ui.input_match_quantity.text())
+        image_srv = ImageManage(self.image_dir_path)
+        target_dir = image_srv.copy_images(self.sorted_scenes, match_quantity)
+        reply = QMessageBox.information(
+            self,
+            "提示",
+            "复制成功，是否立即打开目标特定目录？",
+            QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel,
+            QMessageBox.StandardButton.Ok
+        )  # 方法 A：使用 PySide6 自带的跨平台方法（推荐）
+        # 2. 判断用户的选择
+        if reply == QMessageBox.StandardButton.Ok:
+            # 用户点击了确认，执行打开目录的操作
+
+            if os.path.exists(target_dir):
+                QDesktopServices.openUrl(QUrl.fromLocalFile(target_dir))
+            else:
+                QMessageBox.warning(self, "错误", "找不到指定的目录！")
+        else:
+            # 用户点击了取消或者直接关闭了弹窗，什么都不做
+            print("用户取消了操作")

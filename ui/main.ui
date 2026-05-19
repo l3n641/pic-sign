@@ -19,64 +19,28 @@
      <x>10</x>
      <y>10</y>
      <width>781</width>
-     <height>59</height>
+     <height>62</height>
     </rect>
    </property>
    <property name="title">
     <string>设置</string>
    </property>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>470</x>
-      <y>30</y>
-      <width>111</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>最大匹输出场景数</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="input_match_quantity">
-    <property name="geometry">
-     <rect>
-      <x>599</x>
-      <y>26</y>
-      <width>171</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>1</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_image_dir_path">
-    <property name="geometry">
-     <rect>
-      <x>194</x>
-      <y>26</y>
-      <width>251</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>请先选择图片目录</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="button_open_image_dir">
-    <property name="geometry">
-     <rect>
-      <x>11</x>
-      <y>26</y>
-      <width>178</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>打开图片目录</string>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QPushButton" name="button_open_image_dir">
+      <property name="text">
+       <string>打开图片目录</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="label_image_dir_path">
+      <property name="text">
+       <string>请先选择图片目录</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
@@ -308,9 +272,9 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>194</x>
-     <y>470</y>
-     <width>421</width>
+     <x>270</x>
+     <y>460</y>
+     <width>221</width>
      <height>24</height>
     </rect>
    </property>
@@ -324,9 +288,9 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>20</x>
      <y>500</y>
-     <width>411</width>
+     <width>161</width>
      <height>24</height>
     </rect>
    </property>
@@ -337,7 +301,7 @@
   <widget class="QCheckBox" name="checkBox_remove_image_match_prefix">
    <property name="geometry">
     <rect>
-     <x>640</x>
+     <x>200</x>
      <y>500</y>
      <width>89</width>
      <height>24</height>
@@ -345,6 +309,48 @@
    </property>
    <property name="text">
     <string>模糊匹配</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_export_images">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>500</y>
+     <width>131</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>导出图片</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="input_match_quantity">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>500</y>
+     <width>51</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>3</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>500</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>最大匹输出场景数</string>
    </property>
   </widget>
  </widget>

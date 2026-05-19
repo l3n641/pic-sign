@@ -1,13 +1,11 @@
 import os
-import shutil
-import time
 from collections import defaultdict
 from typing import List, Tuple, Optional
 
 import cv2
 import numpy as np
 
-from service.struct import Point, Rectangle
+from service.project_struct import Rectangle
 
 
 # ==========================================
@@ -104,16 +102,11 @@ class SceneClassifier:
         except cv2.error:
             return False
 
-    def classify(self, source_dir: str, output_dir: str, n_top: int = 0,
-                 valid_exts=('.jpg', '.jpeg', '.png', '.webp', '.bmp')):
+    def classify(self, source_dir: str, valid_exts=('.jpg', '.jpeg', '.png', '.webp', '.bmp')):
         """
         核心分类流
         :param source_dir: 输入图片文件夹
-        :param output_dir: 分类结果输出主文件夹
-        :param n_top: 限制只输出数量最多的前 N 个场景。<= 0 则输出全部。
         """
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
 
         files = [f for f in os.listdir(source_dir) if f.lower().endswith(valid_exts)]
 
@@ -149,69 +142,4 @@ class SceneClassifier:
         # 排序阶段
         sorted_scenes = sorted(scene_files.items(), key=lambda item: len(item[1]), reverse=True)
 
-        print("\n--- 第二阶段：统计并筛选结果 ---")
-        if n_top <= 0:
-            print(f"[n_top 设为 {n_top}] 将保留并复制全部 {len(sorted_scenes)} 个场景")
-            top_scenes = sorted_scenes
-        else:
-            print(f"将仅筛选并保留数量排名前 {n_top} 的场景")
-            top_scenes = sorted_scenes[:n_top]
-
-        print("场景数量完整排名如下：")
-        for rank, (s_id, f_list) in enumerate(sorted_scenes, 1):
-            status = "[保留并复制]" if (n_top <= 0 or rank <= n_top) else "[舍弃]"
-            print(f"  排名 {rank}: 场景 {s_id} -> 包含 {len(f_list)} 张图片 {status}")
-
-        print("\n--- 第三阶段：执行文件分区复制 ---")
-        for rank, (s_id, f_list) in enumerate(top_scenes, 1):
-            target_dir = os.path.join(output_dir, f"rank_{rank}_scene_{s_id}")
-            os.makedirs(target_dir, exist_ok=True)
-
-            print(f"正在复制 场景 {s_id} 的图片到: {target_dir}")
-            for filename in f_list:
-                src_path = os.path.join(source_dir, filename)
-                shutil.copy(src_path, os.path.join(target_dir, filename))
-
-
-# ==========================================
-#  统一运行测试入口
-# ==========================================
-
-if __name__ == "__main__":
-    # 路径配置
-    SRC_FOLDER = r'D:\code\test\images'
-    OUT_FOLDER = f'D:\code\\test\images\\output_{time.time()}'
-
-    # 定义目标矩形区域
-    my_regions = [
-        Rectangle(Point(60, 190), width=675, length=850)
-    ]
-
-    # --- 参数控制面板 ---
-
-    # 💥 控制开关：'only_scan'（只扫描矩形内） 或 'ignore'（抠除矩形，扫描矩形外）
-    CURRENT_MODE = "ignore"
-
-    # 保留数量前 N 的场景数 (0 代表保留所有)
-    N_TOP_SCENES = 1
-
-    # 相似匹配阈值
-    # 注意：如果是 'only_scan' 局部，提取点较少，阈值建议设低点（如 30~50）；
-    # 如果是 'ignore' 仅抠除一小块，大部分全图都被扫描，阈值可以设高点（如 400~1000）。
-    SIMILARITY_THRES = 1000
-
-    # 实例化并运行
-    classifier = SceneClassifier(
-        regions=my_regions,
-        region_mode=CURRENT_MODE,
-        nfeatures=2000,
-        similarity_thresh=SIMILARITY_THRES
-    )
-
-    classifier.classify(
-        source_dir=SRC_FOLDER,
-        output_dir=OUT_FOLDER,
-        n_top=N_TOP_SCENES
-    )
-
-    print("\n所有图片处理完毕。")
+        return sorted_scenes

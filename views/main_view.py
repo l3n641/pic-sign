@@ -199,6 +199,8 @@ class MainView(QMainWindow, Ui_Widget):
         self.sorted_scenes = classifier.classify(
             source_dir=self.image_dir_path,
         )
+        print( self.sorted_scenes)
+
         self.statusBar().showMessage("任务执行完成")
         self.ui.button_export_images.setEnabled(True)
 

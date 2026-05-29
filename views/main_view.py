@@ -52,7 +52,7 @@ class MainView(QMainWindow, Ui_Widget):
             return  # 用户取消了选择
 
         # 2. 创建并弹出自定义对话框
-        dialog = ImageClickDialog(file_path, self)
+        dialog = ImageClickDialog(file_path, max_points=2, connect_points=False, parent=self)
 
         # 3. 连接信号，接收返回的坐标
         dialog.points_selected.connect(self.handle_coordinates)

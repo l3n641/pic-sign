@@ -2,57 +2,43 @@ from PySide6.QtCore import Qt, Signal, QTimer
 from PySide6.QtGui import QPixmap, QCursor
 from PySide6.QtWidgets import (
     QVBoxLayout,
-    QDialog
+    QDialog, QScrollArea
 )
 
-from .clickable_label import ClickableLabel
+from .zoomable_image_label import ZoomableImageLabel
+from service.project_struct import Point, Rectangle
 
 
 class ImageClickDialog(QDialog):
     points_selected = Signal(list)
 
-    def __init__(self, image_path, parent=None):
+    def __init__(self, image_path, max_points, connect_points=False, parent=None ):
         super().__init__(parent)
-        self.setWindowTitle("请点击选择两个点")
-
-        self.pixmap = QPixmap(image_path)
-        self.points = []
-        self.is_completed = False  # 防止延迟期间重复点击
+        self.setWindowTitle(f"请点击 {max_points} 个点 | Ctrl+滚轮缩放")
+        self.resize(800, 600)
 
         layout = QVBoxLayout(self)
 
-        # 使用我们自定义的 ClickableLabel
-        self.image_label = ClickableLabel(self)
-        self.image_label.setPixmap(self.pixmap)
+        self.scroll_area = QScrollArea(self)
+        self.scroll_area.setWidgetResizable(False)
 
-        # 设置鼠标为十字准星
+        # 将配置参数透传给自定义 Label
+        self.image_label = ZoomableImageLabel(max_points, connect_points, self)
+        pixmap = QPixmap(image_path)
+        self.image_label.set_orig_pixmap(pixmap)
         self.image_label.setCursor(QCursor(Qt.CursorShape.CrossCursor))
 
-        layout.addWidget(self.image_label)
-        self.setLayout(layout)
-        self.adjustSize()
+        self.image_label.points_updated.connect(self.check_points_count)
 
-    def mousePressEvent(self, event):
-        if self.is_completed:
-            return
+        self.scroll_area.setWidget(self.image_label)
+        layout.addWidget(self.scroll_area)
 
-        # 获取鼠标相对于 image_label 的坐标
-        label_pos = self.image_label.mapFrom(self, event.pos())
-
-        # 确保点击在图片有效范围内
-        if self.image_label.rect().contains(label_pos):
-            self.points.append(label_pos)
-
-            # 把坐标同步给 Label，让它立刻在自己身上画出红点
-            self.image_label.set_points(self.points)
-
-            if len(self.points) == 2:
-                self.is_completed = True
-                # 延迟 500 毫秒关闭，让用户看清第二个红点
-                QTimer.singleShot(500, self.finish_and_close)
+    def check_points_count(self):
+        # 满足用户指定的自定义点数时自动关闭
+        if len(self.image_label.raw_points) == self.image_label.max_points:
+            QTimer.singleShot(400, self.finish_and_close)
 
     def finish_and_close(self):
-        # 转换为普通元组列表传回主窗口
-        points_list = [(p.x(), p.y()) for p in self.points]
+        points_list = [Point(p.x(), p.y()) for p in self.image_label.raw_points]
         self.points_selected.emit(points_list)
         self.accept()

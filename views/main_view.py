@@ -5,14 +5,16 @@ from PySide6.QtCore import QUrl
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QListWidgetItem
-from PySide6.QtWidgets import QMainWindow, QFileDialog
+from PySide6.QtWidgets import QMainWindow
 from PySide6.QtWidgets import QMessageBox
+from PySide6.QtWidgets import QVBoxLayout, QFileDialog
 
 from service.image_manage import ImageManage
 from service.project_struct import Point, Rectangle
 from service.scene_clusterer import SceneClassifier
 # 导入转换后的 UI 类（注意路径，因为 ui_py 是在根目录下的包）
 from ui_py.main_ui import Ui_Widget
+from views.image_click_dialog import ImageClickDialog
 
 
 class MainView(QMainWindow, Ui_Widget):
@@ -22,7 +24,8 @@ class MainView(QMainWindow, Ui_Widget):
         self.image_dir_path = ""
         self.last_image_dir_path = "./"
         self.sorted_scenes = []
-
+        # 布局
+        layout = QVBoxLayout(self)
         # 1. 实例化 UI 对象并挂载到 self.ui
         self.ui = Ui_Widget()
         self.ui.setupUi(self)
@@ -37,6 +40,37 @@ class MainView(QMainWindow, Ui_Widget):
         self.ui.button_del_rect.clicked.connect(self.handle_del_rect)
         self.ui.button_start.clicked.connect(self.handle_start_task)
         self.ui.button_export_images.clicked.connect(self.handle_export_images)
+        self.ui.button_image_picker.clicked.connect(self.handle_open_image_dialog)
+
+    def handle_open_image_dialog(self):
+        # 1. 打开文件选择器获取图片路径
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, "选择图片", "", "Image Files (*.png *.jpg *.jpeg *.bmp)"
+        )
+
+        if not file_path:
+            return  # 用户取消了选择
+
+        # 2. 创建并弹出自定义对话框
+        dialog = ImageClickDialog(file_path, self)
+
+        # 3. 连接信号，接收返回的坐标
+        dialog.points_selected.connect(self.handle_coordinates)
+
+        # 4. 以模态方式运行对话框
+        dialog.exec()
+
+    def handle_coordinates(self, points):
+        # 接收到坐标后的业务逻辑处理
+        print(f"Main View 收到坐标: {points}")
+        region = Rectangle(points[0], points[1])
+
+        # 2. 创建列表项，界面上只显示一个名字
+        item = QListWidgetItem(str(region))
+
+        # 3. 把整个 QRectF 对象塞进这一行里
+        item.setData(Qt.ItemDataRole.UserRole, region)
+        self.ui.listWidget_rect.addItem(item)
 
     # --- 打开图片目录 ---
     def handle_open_image_dir(self):

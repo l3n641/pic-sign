@@ -1,21 +1,32 @@
-from PySide6.QtCore import Qt, Signal, QTimer
+from PySide6.QtCore import QTimer
+from PySide6.QtCore import Signal, Qt
 from PySide6.QtGui import QPixmap, QCursor
 from PySide6.QtWidgets import (
     QVBoxLayout,
     QDialog, QScrollArea
 )
 
+from service.project_struct import Point
 from .zoomable_image_label import ZoomableImageLabel
-from service.project_struct import Point, Rectangle
 
 
 class ImageClickDialog(QDialog):
     points_selected = Signal(list)
 
-    def __init__(self, image_path, max_points, connect_points=False, parent=None ):
+    def __init__(self, image_path, max_points, connect_points=False, parent=None, window_size=None):
         super().__init__(parent)
         self.setWindowTitle(f"请点击 {max_points} 个点 | Ctrl+滚轮缩放")
-        self.resize(800, 600)
+        # 2. 判断是否传递了 size 参数
+        if window_size is not None:
+            # 如果传的是元组或列表，如 (800, 600)
+            if isinstance(window_size, (tuple, list)) and len(window_size) == 2:
+                self.resize(window_size[0], window_size[1])
+            # 如果传的是 QSize 对象
+            else:
+                self.resize(window_size)
+        else:
+            # 3. 如果没传，则默认窗口最大化
+            self.setWindowState(Qt.WindowMaximized)
 
         layout = QVBoxLayout(self)
 

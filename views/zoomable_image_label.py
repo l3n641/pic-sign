@@ -1,13 +1,13 @@
 import sys
 from PySide6.QtCore import Qt, QPoint, Signal, QTimer
-from PySide6.QtGui import QPixmap, QPainter, QPen, QColor, QCursor
+from PySide6.QtGui import QPixmap, QPainter, QPen, QColor, QCursor, QKeyEvent
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QFileDialog, QDialog, QLabel, QScrollArea, QSpinBox, QCheckBox
 )
 
 
-# 1. 支持缩放、自定义打点数及连线的自定义 Label
+# 1. 支持缩放、自定义打点数、连线以及 Ctrl+Z 回退的自定义 Label
 class ZoomableImageLabel(QLabel):
     points_updated = Signal()
 
@@ -19,6 +19,9 @@ class ZoomableImageLabel(QLabel):
         self.orig_pixmap = QPixmap()
         self.scale_factor = 1.0
         self.raw_points = []  # 存储图片【原始像素】坐标
+
+        # 【关键改动】让 Label 可以接收键盘焦点，否则 keyPressEvent 不会触发
+        self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
     def set_orig_pixmap(self, pixmap):
         self.orig_pixmap = pixmap
@@ -55,12 +58,14 @@ class ZoomableImageLabel(QLabel):
             super().wheelEvent(event)
 
     def mousePressEvent(self, event):
+        # 点击时让组件主动获取焦点，确保接下来的键盘快捷键生效
+        self.setFocus()
+
         if event.button() == Qt.MouseButton.LeftButton:
-            # 动态判断：如果已经达到了设定的最大点数，则不再响应
+            # 如果已经达到了设定的最大点数，则不再响应
             if len(self.raw_points) >= self.max_points:
                 return
 
-                # 使用 Qt 6 推荐的 position().toPoint() 规避 DeprecationWarning
             click_pos = event.position().toPoint()
 
             raw_x = int(click_pos.x() / self.scale_factor)
@@ -74,6 +79,20 @@ class ZoomableImageLabel(QLabel):
 
             self.points_updated.emit()
 
+    # 【新增功能】监听键盘事件，实现 Ctrl + Z 回退
+    def keyPressEvent(self, event: QKeyEvent):
+        # 检查是否按下了 Ctrl 键（或 Mac 上的 Command 键）并且按键是 Z
+        if event.key() == Qt.Key.Key_Z and (event.modifiers() & Qt.KeyboardModifier.ControlModifier):
+            if self.raw_points:
+                self.raw_points.pop()  # 移除最后一个点
+                self.update()  # 触发重绘（红点和连线会自动更新）
+                self.points_updated.emit()  # 通知外部点位更新
+                event.accept()  # 标记该事件已被处理
+                return
+
+        # 其他按键交给父类默认处理
+        super().keyPressEvent(event)
+
     def paintEvent(self, event):
         super().paintEvent(event)
         if not self.raw_points:
@@ -82,13 +101,12 @@ class ZoomableImageLabel(QLabel):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-        # 1. 如果开启了连线配置，先画线段（让线处于点的下方，视觉效果更好）
+        # 1. 如果开启了连线配置，先画线段
         if self.connect_points and len(self.raw_points) > 1:
-            line_pen = QPen(QColor(0, 150, 255), 3)  # 蓝色的线，粗细为 3
+            line_pen = QPen(QColor(0, 150, 255), 3)
             line_pen.setStyle(Qt.PenStyle.SolidLine)
             painter.setPen(line_pen)
 
-            # 将原始坐标转为当前缩放视图坐标，并依次连线
             for i in range(len(self.raw_points) - 1):
                 p1 = self.raw_points[i]
                 p2 = self.raw_points[i + 1]

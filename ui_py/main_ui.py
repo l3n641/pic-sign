@@ -189,6 +189,47 @@ class Ui_Widget(object):
         self.gridLayout_2.addWidget(self.progressBar, 0, 0, 1, 5)
 
         self.tabWidget.addTab(self.tab, "")
+        self.tab_2 = QWidget()
+        self.tab_2.setObjectName(u"tab_2")
+        self.groupBox_4 = QGroupBox(self.tab_2)
+        self.groupBox_4.setObjectName(u"groupBox_4")
+        self.groupBox_4.setGeometry(QRect(10, 0, 901, 71))
+        self.layoutWidget = QWidget(self.groupBox_4)
+        self.layoutWidget.setObjectName(u"layoutWidget")
+        self.layoutWidget.setGeometry(QRect(20, 20, 454, 28))
+        self.horizontalLayout_2 = QHBoxLayout(self.layoutWidget)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.button_select_skewed_image = QPushButton(self.layoutWidget)
+        self.button_select_skewed_image.setObjectName(u"button_select_skewed_image")
+
+        self.horizontalLayout_2.addWidget(self.button_select_skewed_image)
+
+        self.label_6 = QLabel(self.layoutWidget)
+        self.label_6.setObjectName(u"label_6")
+
+        self.horizontalLayout_2.addWidget(self.label_6)
+
+        self.input_skewed_image_width = QLineEdit(self.layoutWidget)
+        self.input_skewed_image_width.setObjectName(u"input_skewed_image_width")
+
+        self.horizontalLayout_2.addWidget(self.input_skewed_image_width)
+
+        self.label_7 = QLabel(self.layoutWidget)
+        self.label_7.setObjectName(u"label_7")
+
+        self.horizontalLayout_2.addWidget(self.label_7)
+
+        self.input_skewed_image_height = QLineEdit(self.layoutWidget)
+        self.input_skewed_image_height.setObjectName(u"input_skewed_image_height")
+
+        self.horizontalLayout_2.addWidget(self.input_skewed_image_height)
+
+        self.button_start_conv_images = QPushButton(self.groupBox_4)
+        self.button_start_conv_images.setObjectName(u"button_start_conv_images")
+        self.button_start_conv_images.setEnabled(False)
+        self.button_start_conv_images.setGeometry(QRect(500, 20, 88, 26))
+        self.tabWidget.addTab(self.tab_2, "")
 
         self.retranslateUi(Widget)
 
@@ -248,5 +289,11 @@ class Ui_Widget(object):
         self.button_remove_image.setText(QCoreApplication.translate("Widget", u"\u79fb\u9664\u76f8\u540c\u540d\u79f0\u7684\u56fe\u7247", None))
         self.checkBox_remove_image_match_prefix.setText(QCoreApplication.translate("Widget", u"\u6a21\u7cca\u5339\u914d", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("Widget", u"\u56fe\u7247\u5206\u7c7b", None))
+        self.groupBox_4.setTitle(QCoreApplication.translate("Widget", u"\u56fe\u7247\u900f\u89c6\u8f6c\u5316", None))
+        self.button_select_skewed_image.setText(QCoreApplication.translate("Widget", u"\u5f85\u900f\u89c6\u7684\u6587\u4ef6", None))
+        self.label_6.setText(QCoreApplication.translate("Widget", u"\u8f93\u51fa\u7684\u5bbd\u5ea6", None))
+        self.label_7.setText(QCoreApplication.translate("Widget", u"\u8f93\u51fa\u7684\u9ad8\u5ea6", None))
+        self.button_start_conv_images.setText(QCoreApplication.translate("Widget", u"\u5f00\u59cb", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("Widget", u"\u5de5\u5177", None))
     # retranslateUi
 

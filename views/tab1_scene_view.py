@@ -1,5 +1,6 @@
 # views/tab1_scene_view.py
 import os
+
 from PySide6.QtCore import QUrl, Qt
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QWidget, QListWidgetItem, QMessageBox, QFileDialog
@@ -8,6 +9,7 @@ from service.image_manage import ImageManage
 from service.project_struct import Point, Rectangle
 from service.scene_clusterer import SceneClassifier
 from views.image_click_dialog import ImageClickDialog
+from worker_thread.scene_classification import SceneClassificationThread
 
 
 class Tab1SceneView(QWidget):
@@ -23,6 +25,7 @@ class Tab1SceneView(QWidget):
         self.image_dir_path = ""
         self.last_image_dir_path = "./"
         self.sorted_scenes = []
+        self.scene_classification_thread = None
 
         self.init_signals()
 
@@ -38,7 +41,7 @@ class Tab1SceneView(QWidget):
 
     def handle_open_image_dialog(self):
         file_path, _ = QFileDialog.getOpenFileName(
-            self.window, "选择图片", "", "Image Files (*.png *.jpg *.jpeg *.bmp)"
+            self.window, "选择图片", "", "Image Files (*.png *.webp *.jpg *.jpeg *.bmp)"
         )
         if not file_path:
             return
@@ -127,10 +130,11 @@ class Tab1SceneView(QWidget):
             similarity_thresh=similarity_thresh
         )
 
-        self.sorted_scenes = classifier.classify(source_dir=self.image_dir_path)
-
-        self.window.statusBar().showMessage("任务执行完成")
-        self.ui.button_export_images.setEnabled(True)
+        self.scene_classification_thread = SceneClassificationThread(classifier, source_dir=self.image_dir_path)
+        # 绑定信号
+        self.scene_classification_thread.progress_signal.connect(self.on_progress_update)
+        self.scene_classification_thread.task_finished.connect(self.on_task_completed)
+        self.scene_classification_thread.run()
 
     def handle_export_images(self):
         if not self.sorted_scenes:
@@ -150,3 +154,21 @@ class Tab1SceneView(QWidget):
                 QDesktopServices.openUrl(QUrl.fromLocalFile(target_dir))
             else:
                 QMessageBox.warning(self.window, "错误", "找不到指定的目录！")
+
+    def on_progress_update(self, data):
+        """实时更新界面进度"""
+        curr = data["current"]
+        total = data["total"]
+        filename = data["filename"]
+        self.ui.progressBar.setValue(int(curr / total * 100))
+        self.window.statusBar().showMessage(f"正在处理 ({curr}/{total}): {filename}")
+
+    def on_task_completed(self, sorted_scenes):
+        """处理最终结果"""
+        self.sorted_scenes = sorted_scenes
+        self.window.statusBar().showMessage("任务全部执行完成")
+        print(sorted_scenes)
+        for top, data in sorted_scenes:
+            print(top, len(data))
+
+        self.ui.button_export_images.setEnabled(True)

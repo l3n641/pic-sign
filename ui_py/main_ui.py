@@ -38,7 +38,7 @@ class Ui_Widget(object):
         self.button_open_image_dir.setGeometry(QRect(11, 26, 88, 25))
         self.label_image_dir_path = QLabel(self.groupBox)
         self.label_image_dir_path.setObjectName(u"label_image_dir_path")
-        self.label_image_dir_path.setGeometry(QRect(11, 57, 96, 16))
+        self.label_image_dir_path.setGeometry(QRect(11, 57, 851, 16))
         self.groupBox_2 = QGroupBox(self.tab)
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.groupBox_2.setGeometry(QRect(9, 92, 901, 293))
@@ -184,7 +184,7 @@ class Ui_Widget(object):
 
         self.progressBar = QProgressBar(self.groupBox_3)
         self.progressBar.setObjectName(u"progressBar")
-        self.progressBar.setValue(24)
+        self.progressBar.setValue(0)
 
         self.gridLayout_2.addWidget(self.progressBar, 0, 0, 1, 5)
 
